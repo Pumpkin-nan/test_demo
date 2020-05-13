@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proxy</title>
+</head>
+<body>
+  
+  <script>
+    let user = {
+        name: 'aaa',
+        age: 18
+      }
+      /*
+      * 参数1：user - 要代理的对象
+      * 参数2：{} - 对该代理对象实施的操作
+      * get方法中的参数
+      *   1. target： 指向user，为要代理的对象
+      *   2. prop: 为代理的参数， name || age
+      *   3. 
+      */
+      let pUser = new Proxy(user, {
+        get(target, prop) {
+          target.age = 26
+          // console.log(target)
+          // console.log(prop)
+          return target[prop]
+        },
+        set(target, prop, value) {
+          if (value >= 0 && value <= 200) {
+
+            target[prop] = value
+          } else {
+            alert('年龄输入无效')
+          }
+        }
+      })
+      let age = pUser.age
+  </script>
+</body>
+</html>
