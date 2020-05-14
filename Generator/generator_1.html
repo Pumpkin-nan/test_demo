@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Genarator</title>
+</head>
+<body>
+  <script>
+    /*
+    * 1. Generator 函数标识是 * 号
+    * 2. Generator 返回的是一个指针对象
+    * 3. yeild 后面可以放执行异步的操作
+    * 4. yeild 语句的返回值一般是undefined，但可以通过next('xxx')方法里的xxx给yeild 语句带上值
+    * 
+    */ 
+  function* myGenerator() {
+    console.log('start');
+    yield console.log('aaa')
+
+    console.log('start again1');
+    yield 'hello' // yield 后面如果是表达式则返回，如果是语句则执行
+
+    console.log('start again2');
+    let result = yield 'generator'
+    console.log(result)
+    console.log('end');
+    // 没有值了，如果要默认返回的结果 可以用return
+    return '返回的结果'
+  }
+  let MG = myGenerator() // 'start' 仅返回一个指针对象，不会执行yield
+  MG.next() 
+  // start 
+  // aaa
+  // {value: undefined, done: false}
+
+  MG.next() // 返回一个对象{value: 'xxx', done: bool}
+  // start again1
+  // {value: 'hello', done: false}
+  MG.next() 
+  // start again2
+  // {value: 'generator', done: false}
+  MG.next('5555555555555')
+  // 55555555555
+  // end
+  // {value: '返回的结果', done: true}
+  </script>
+</body>
+</html>
