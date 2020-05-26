@@ -125,16 +125,25 @@ var compileUtil = {
 
   // 解析: v-model
   model: function (node, vm, exp) {
+    // bind做的两件事
+    // 1.解析表达式，实现数据初始化显示;
+    // 2.创建一个watcher  
+
     this.bind(node, vm, exp, 'model');
 
     var me = this,
+    // 得到表达式的值
       val = this._getVMVal(vm, exp);
+    // 给节点添加input事件监听，输入改变时触发
     node.addEventListener('input', function (e) {
+      // 得到输入的最新仩
       var newValue = e.target.value;
+      // 如果没变化 ，直接结束
       if (val === newValue) {
         return;
       }
-
+      // 将最新value保存给表达式对应的属性
+      // -》 set => dep => watcher => updater
       me._setVMVal(vm, exp, newValue);
       val = newValue;
     });
