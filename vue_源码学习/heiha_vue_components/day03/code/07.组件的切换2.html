@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+  <style>
+    .v-enter {
+      /* 即将进入时候的坐标 */
+      opacity: 0;
+      transform: translateX(100px);
+    }
+
+    .v-leave-to {
+      /* 离开时候，最终到达的位置 */
+      opacity: 0;
+      transform: translateX(-100px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 0.4s ease;
+
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- transition     transition-group    template     component -->
+    <!-- 通过 component  的  :is 属性，可以显示指定【名称】的组件 -->
+    <a href="#" @click="comname='com1'">显示组件1</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#" @click="comname='com2'">显示组件2</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#" @click="comname='com3'">显示组件3</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="#" @click="comname='com4'">显示组件4</a>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    <!-- <transition mode="out-in"> -->
+    <transition>
+      <component :is="comname"></component>
+    </transition>
+  </div>
+
+  <script>
+
+    Vue.component('com1', {
+      template: '<h3>奔波霸</h3>'
+    })
+
+    Vue.component('com2', {
+      template: '<h3>霸波奔</h3>'
+    })
+
+    Vue.component('com3', {
+      template: '<h3>孙行者</h3>'
+    })
+
+    Vue.component('com4', {
+      template: '<h3>者行孙</h3>'
+    })
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        comname: 'com1' // 在 data 上定义 comname 来指定要渲染的组件名称
+      },
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <mycom3></mycom3>
+    
+    <mycom4></mycom4>
+  </div>
+
+
+  <div id="app2">
+    <mycom3></mycom3>
+  </div>
+
+
+  <!-- 定义一个 template 标签元素  -->
+  <!-- 使用 Vue 提供的 template 标签，可以定义组件的UI模板解构 -->
+  <template id="tmpl">
+    <div>
+      <h3>哈哈，这是在外界定义的组件UI解构</h3>
+      <h3>我是来捣乱的</h3>
+    </div>
+  </template>
+
+
+
+  <script>
+
+    // 这是定义的全局组件
+    Vue.component('mycom3', {
+      template: '#tmpl'
+    })
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      components: { // 定义实例中私有组件的   组件的名称   和组件的 解构
+        'mycom4': {
+          template: '<h6>这是定义的私有组件</h6>'
+        }
+      }
+    });
+
+
+    var vm2 = new Vue({
+      el: '#app2'
+    })
+  </script>
+
+
+
+
+</body>
+
+</html>

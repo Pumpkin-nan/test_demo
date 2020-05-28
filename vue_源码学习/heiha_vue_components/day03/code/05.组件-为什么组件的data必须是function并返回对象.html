@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <counter></counter>
+    <hr>
+    <counter></counter>
+  </div>
+
+  <script>
+
+    const o = { count: 0 }
+
+    Vue.component('counter', {
+      template: `<div>
+        <input type="button" value="+1" @click="add" />
+        <h3>当前的count值为：{{ count }}</h3>
+      </div>`,
+      // 为什么要把 组件中的 data 定义为一个function呢？ 因为这样做的话，每当我们在页面上引用一次组件，必然会先调用 这个 data function，从而得到一个当前组件私有的 数据对象；
+      data: function () {
+        // 这是自己的改造后的形式：
+        // return o
+
+        // 下面的是官方推荐形式：
+        return {
+          count: 0
+        }
+      },
+      methods: {
+        add() { // 点击按钮，让组件的 count 值 自增 + 1
+          this.count++
+        }
+      }
+    })
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

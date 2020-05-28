@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <mycom2></mycom2>
+  </div>
+
+  <script>
+
+    const com2Obj = {
+      // 1. template 属性中，不能单独放一段文本，必须用标签包裹起来；
+      // 2. 如果在 template 属性中，想要放多个元素了，那么，在这些元素外，必须有唯一的一个根元素进行包裹；
+      template: '<div><h2>这是直接使用 Vue.component 创建出来的组件</h2><h3>红红火火</h3></div>'
+    }
+
+    // 定义全局的组件
+    // Vue.component 的第二个参数，既接收 一个 组件的构造函数， 同时，也接受 一个对象
+    Vue.component('mycom2', com2Obj)
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 父组件如果想要给子组件传递数据，则需要使用属性绑定的形式 -->
+    <!-- 这样，子组件身上的 自定义数据，就是你要传递给子组件的数据 -->
+    <com1 :msg123="parentMsg"></com1>
+  </div>
+
+  <script>
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        parentMsg: '哈哈，你是想笑死我，然后好继承我的蚂蚁花呗吗？'
+      },
+      methods: {},
+
+      components: { // 定义私有组件
+        'com1': { // 在Vue中，默认，子组件无法直接获取父组件中的数据
+          template: `<div>
+            <h3>这是子组件中的标题 {{ msg123 }}</h3>
+          </div>`,
+          props: ['msg123'] // 在Vue中，只有 props 是数组，其它带 s 后缀的属性都是 对象
+        }
+      }
+
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 1. 如果要向子组件传递 data 中的数据，则 使用 属性绑定的形式  v-bind: -->
+    <!-- 2. 如果要向子组件传递 methods 中的 方法，则 使用 事件绑定的形式 v-on: -->
+    <com1 @func1="show"></com1>
+  </div>
+
+  <script>
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msgFormSon: ''
+      },
+      methods: {
+        show(arg1) {
+          // console.log('有人调用了父组件中的show方法-----' + arg1)
+          // 把子组件传递过来的数据，保存到 父组件的  data 中
+          this.msgFormSon = arg1
+          console.log(this.msgFormSon)
+        }
+      },
+
+      components: { // 定义子组件
+        'com1': {
+          template: `<div>
+            <!-- 当点击子组件的  按钮时候， 调用一下 父组件传递过来的 func 方法 -->
+            <input type="button" value="这是子组件的按钮" @click="btnClick" />
+          </div>`,
+          data() { // 子组件的数据
+            return {
+              sonMsg: '这是子组件中的数据'
+            }
+          },
+          methods: {
+            btnClick() {
+              // console.log('ok')
+              // 调用一下 父组件传递过来的 func 方法  emit 英文原意为 发射， 在 计算机中，引申为 触发
+
+              // 子组件向父组件传值，本质上，还是调用了父组件传递过来的方法，只不过，子组件在调用的时候，把 数据 当作参数，传给这个方法了；
+              this.$emit('func1', this.sonMsg)
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

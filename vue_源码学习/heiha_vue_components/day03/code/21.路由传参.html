@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+  <!-- 1. 导入路由JS文件 -->
+  <script src="./lib/vue-router-v3.0.1.js"></script>
+
+  <style>
+    .router-link-active {
+      color: red;
+      font-weight: bold;
+      font-style: italic;
+      font-size: 20px;
+      text-decoration: underline;
+    }
+
+    .my-active {
+      color: orange;
+      font-size: 30px;
+    }
+
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 0.3s ease;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- 路由链接 -->
+    <router-link to="/login?id=10">登录</router-link>
+    <router-link to="/reg">注册</router-link>
+
+    <!-- 展示路由组件的容器 -->
+    <transition>
+      <router-view></router-view>
+    </transition>
+
+  </div>
+
+  <script>
+
+    // 2. 定义两个要切换的组件
+    const login = { // 组件也有自己的生命周期函数，这些函数，和 vm 实例的 生命周期函数一致
+      template: '<h3>登录组件 --- {{ $route.query.id }}</h3>',
+      created() { // 当 login 组件 中 data 和 methods 初始化完毕后，调用 created
+        console.log(this.$route.query.id)
+      }
+    }
+    const reg = {
+      template: '<h3>注册组件</h3>'
+    }
+
+    // 3. 创建路由对象
+    const router = new VueRouter({
+      routes: [ // 路由规则的数组
+        { path: '/', redirect: '/login' },
+        { path: '/login', component: login },
+        { path: '/reg', component: reg }
+      ],
+      linkActiveClass: 'my-active'
+    })
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router // 4. 把路由对象，挂载到 VM 实例上
+    });
+  </script>
+</body>
+
+</html>

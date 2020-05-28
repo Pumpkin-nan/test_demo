@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <com1 :info="info"></com1>
+  </div>
+
+  <script>
+
+    Vue.component('com1', {
+      template: `<div>
+        <input type="button" value="按钮" @click="btnClick" />
+          <h3>{{ msg }} ---- {{ info2 }}</h3>
+      </div>`,
+      data() { // data 上的数据，都是组件自己私有的， data 上的数据，都是可读可写的
+        return {
+          msg: 'ok',
+          info2: this.info
+        }
+      },
+      props: ['info'], // 都是外界传递过来的数据， props 中的数据只能读取，不能重新写入
+      methods: {
+        btnClick() {
+          this.msg = 'no'
+          this.info2 = '456'
+        }
+      }
+    })
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        info: '123'
+      },
+      methods: {}
+    });
+
+
+    // 在学习 React 时候，也会接触到 类似于  Vue 中的  data 和 props 两个东西；
+    // 在 React 中，取而代之的是  data  ->   state       props ->    this.props
+  </script>
+</body>
+
+</html>

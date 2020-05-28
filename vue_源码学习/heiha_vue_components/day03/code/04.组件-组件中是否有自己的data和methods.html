@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <mycom></mycom>
+  </div>
+
+  <script>
+
+    Vue.component('mycom', {
+      template: '<h3 @click="show">这是自定义的全局组件：{{ msg }}</h3>',
+      data: function () { // 在 组件中，可以有自己的私有数据，但是，组件的 data 必须是一个 function，并且内部 return 一个 数据对象
+        return {
+          msg: '哈哈哈'
+        }
+      },
+      methods: { // 尝试定义组件的私有方法
+        show() {
+          console.log('出发了组件的私有show方法！')
+        }
+      }
+    })
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {}
+    });
+  </script>
+</body>
+
+</html>

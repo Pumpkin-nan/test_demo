@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!-- 1. 导入Vue的包 -->
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <!-- 2. 创建要控制的区域 -->
+  <div id="app">
+    <!-- 如何引入一个全局的Vue组件呢？ 直接把 组件的名称，以标签的形式，放到页面上就好了！ -->
+    <mycom1></mycom1>
+  </div>
+
+  <script>
+
+    // 创建全局组件的第一种方式：   component
+    const com1 = Vue.extend({
+      template: '<h1>这是创建的第一个全局组件</h1>' // template 属性，表示这个组件的 UI 代码解构
+    })
+    // 使用 Vue.component 向全局注册一个组件
+    // Vue.component('组件的名称', 组件的构造函数)
+    Vue.component('mycom1', com1)
+
+    const vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {
+        getList() {
+
+        }
+      },
+      filters: {},
+      directives: {},
+      created() { // 表示 data 数据 和 methods 方法都已经可用了
+        this.getList()
+      },
+      mounted() { // 表示 内存中渲染好的 DOM 树，已经挂载到了真实的页面中；
+        //在网页中，有一些 第三方的 插件，需要初始化；  
+        // 使用 Jquery 封装出来的框架分为两部分：  UI 解构    JS 代码 
+        // 因此： 一些第三方的插件，如果要结合Vue来使用，而且，这个插件需要手动初始化JS逻辑，此时，必须放到 mounted ，否则，可能无法出现预期效果；
+      }
+    })
+
+    // console.dir(com1)
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- hash # 不会刷新页面，也不会发起新的HTTP请求， 只是实现客户端页面的定位的 -->
+  <!-- # 可以修改浏览器端的访问历史纪录 -->
+  <a href="#/a">a</a>
+  <a href="#/b">b</a>
+  <a href="#/c">c</a>
+
+
+  <script>
+    window.onhashchange = function () {
+      // console.log('Hash被改变了')
+      console.log(location.hash)
+    }
+  </script>
+</body>
+
+</html>

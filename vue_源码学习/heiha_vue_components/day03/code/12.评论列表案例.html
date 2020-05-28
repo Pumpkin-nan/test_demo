@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="./lib/vue-2.5.9.js"></script>
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- 评论框区域 -->
+    <cmt-box @func="addNewCmt"></cmt-box>
+
+
+    <ul>
+      <cmt-item v-for="(item, i) in list" :item="item" :key="i"></cmt-item>
+    </ul>
+
+  </div>
+
+  <script>
+
+    Vue.component('cmt-item', {
+      template: `<li>
+        <h3>评论人：{{ item.name }}</h3>
+        <h5>评论内容：{{ item.content }}</h5>
+      </li>`,
+      props: ['item']
+    })
+
+
+    Vue.component('cmt-box', {
+      template: `<div>
+      <label>评论人：</label>
+      <br>
+      <input type="text" v-model="name">
+      <br>
+      <label>评论内容：</label>
+      <br>
+      <textarea v-model="content"></textarea>
+      <br>
+      <input type="button" value="发表评论" @click="postComment">
+    </div>`,
+      data: function () {
+        return {
+          name: '',
+          content: ''
+        }
+      },
+      methods: {
+        postComment() { // 发表评论
+          // console.log('ok')
+          const cmt = { name: this.name, content: this.content }
+          // 子组件中，调用父组件传递过来的方法，然后可以把 子组件的数据，当作参数，传递给父组件的方法去使用
+          this.$emit('func', cmt)
+          this.name = this.content = ''
+          // console.log(cmt)
+        }
+      }
+    })
+
+    // 创建 Vue 实例，得到 ViewModel
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        list: [
+          { name: 'zs', content: '沙发' },
+          { name: 'ls', content: '板凳' },
+          { name: 'qqq', content: '凉席' },
+          { name: 'eee', content: '砖头' }
+        ]
+      },
+      methods: {
+        addNewCmt(cmt) { // 添加新评论
+          // console.log(cmt)
+          this.list.push(cmt)
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
