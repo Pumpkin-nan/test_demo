@@ -14,10 +14,13 @@ function MVVM(options) {
     me._proxy(key);
   });
 
-  // 对data进行监视
+  // 1. 对data中所有层次的属性通过数据劫持实现数据绑定
+  // 这里会创建Dep（先），Dep与data中的属性一一对应
   observe(data, this);
 
-  // 创建一个用来编译模板的compile对象
+  // 2. 创建一个用来编译模板的compile对象(模板解析),解析指令属性/大括号表达式，实现初始化视图(updater)
+  // 这里会创建Watcher（后），watcher与表达式一一对应
+  // 这里一创建则Dep与Watcher之间的关系
   this.$compile = new Compile(options.el || document.body, this)
 }
 

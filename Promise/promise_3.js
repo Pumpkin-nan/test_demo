@@ -1,33 +1,33 @@
-(function(window){
-  const PENDING = 'pending'
-  const RESOLVED = 'resolved'
-  const REJECTED = 'rejected'
+(function(window) {
+  let PENDING = 'pending'
+  let RESOLVED = 'resolved'
+  let REJECTED = 'rejected'
   function Promise(excutor) {
     const self = this
     self.status = PENDING
     self.data = undefined
-    self.callbacks = []
+    self.callbacks = [] //onResolved onRejected
     function resolve(value) {
-      if(self.status !== PENDING) { return }
+      if (self.status !== PENDING) { return }
       self.status = RESOLVED
       self.data = value
-      if(self.callbacks.length > 0) {
+      if (self.callbacks.length) {
         setTimeout(() => {
           self.callbacks.forEach(callbacksObj => {
-            callbacksObj.onResolved(value)
-          });
-        })
+            callbacksObj.onResolved(self.data)
+          }); 
+        });
       }
     }
     function reject(reason) {
-      if(self.status !== PENDING) { return }
+      if (self.status !== PENDING) { return }
       self.status = REJECTED
       self.data = reason
-      if(self.callbacks.length > 0) {
+      if (self.callbacks.length) {
         setTimeout(() => {
           self.callbacks.forEach(callbacksObj => {
-            callbacksObj.onRejected(value)
-          });
+            callbacksObj.onRejected(self.data)
+          }); 
         });
       }
     }
@@ -37,15 +37,12 @@
       reject(error)
     }
   }
-
   Promise.prototype.then = function(onResolved, onRejected) {
-    onResolved = typeof onResolved === 'function' ? onResolved : value => value
-    onRejected = typeof onRejected === 'function' ? onRejected : reason => { throw reason }
     const self = this
     return new Promise((resolve, reject) => {
-      function handle(callback) {
+      function handle (callback) {
+        const result = callback(self.data)
         try {
-          const result = callback(self.data)
           if (result instanceof Promise) {
             result.then(resolve, reject)
           } else {
@@ -55,7 +52,7 @@
           reject(error)
         }
       }
-      if(self.status === PENDING) {
+      if (self.status === PENDING) {
         self.callbacks.push({
           onResolved(value) {
             handle(onResolved)
@@ -64,18 +61,15 @@
             handle(onRejected)
           }
         })
-      } else if(self.status === RESOLVED) {
+      } else if (self.status === RESOLVED) {
         setTimeout(() => {
-          
           handle(onResolved)
         });
       } else { // REJECTED
         setTimeout(() => {
-          
           handle(onRejected)
         });
       }
-
     })
   }
 
@@ -84,7 +78,7 @@
   }
 
   Promise.resolve = function(value) {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (value instanceof Promise) {
         value.then(resolve, reject)
       } else {
@@ -92,21 +86,23 @@
       }
     })
   }
+
   Promise.reject = function(reason) {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       reject(reason)
     })
   }
+
   Promise.all = function(promises) {
-    const values = new Array(promises.length)
-    const successCount = 0
+    let values = new Array(promises.length)
+    let resolveSuccess = 0
     return new Promise((resolve, reject) => {
       promises.forEach(function(p, index) {
         Promise.resolve(p).then(
           value => {
-            successCount ++
             values[index] = value
-            if (successCount === promises.length) {
+            resolveSuccess += 1
+            if (resolveSuccess === promises.length) {
               resolve(values)
             }
           },
@@ -115,9 +111,10 @@
           }
         )
       })
-    })
+    }) 
   }
-  Promise.race = function (promises) {
+
+  Promise.race = function(promises) {
     return new Promise((resolve, reject) => {
       promises.forEach(function(p, index) {
         Promise.resolve(p).then(
